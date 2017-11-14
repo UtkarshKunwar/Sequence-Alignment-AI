@@ -16,6 +16,7 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JSlider;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
 
 /**
  *
@@ -44,6 +45,8 @@ public class ALVISDesktop extends javax.swing.JFrame {
         app.branchingFactor = Integer.valueOf((String)branchingFactorComboBox.getItemAt(branchingFactorComboBox.getSelectedIndex()));
         app.density = Integer.valueOf((String)densityComboBox.getItemAt(densityComboBox.getSelectedIndex()));
         app.densityMax = Integer.valueOf((String)densityComboBox.getItemAt(densityComboBox.getItemCount()-1));
+        app.rows = (Integer)rowsSpinner.getValue();
+        app.cols = (Integer)colsSpinner.getValue();
 
         enableComponents();
     }
@@ -74,6 +77,11 @@ public class ALVISDesktop extends javax.swing.JFrame {
                 runButton2.setEnabled(false);
                 stopButton2.setEnabled(true);
                 pipeButton.setEnabled(false);
+
+                rowsLabel.setEnabled(false);
+                rowsSpinner.setEnabled(false);
+                colsLabel.setEnabled(false);
+                colsSpinner.setEnabled(false);
             }
             break;
             case ALGO_SELECTED: {
@@ -143,6 +151,11 @@ public class ALVISDesktop extends javax.swing.JFrame {
                         graphGrid_3MSTButton.setEnabled(true);
                         graphGrid_4MSTButton.setEnabled(true);
                         graphSAGridButton.setEnabled(true);
+
+                        rowsLabel.setEnabled(true);
+                        rowsSpinner.setEnabled(true);
+                        colsLabel.setEnabled(true);
+                        colsSpinner.setEnabled(true);
                     //}
                 }
             }
@@ -169,6 +182,9 @@ public class ALVISDesktop extends javax.swing.JFrame {
                     densityComboBox.setEnabled(false);
 
                     startNodeButton.setEnabled(true);
+
+                    rowsSpinner.setEnabled(false);
+                    colsSpinner.setEnabled(false);
                 //}
             }
             break;
@@ -324,7 +340,23 @@ public class ALVISDesktop extends javax.swing.JFrame {
             graphCanvas1.repaint();
         }
     }
-    
+
+    private void rowsSpinnerStateChangedHelper(javax.swing.event.ChangeEvent evt) {
+        if (app.selectRowsCols((Integer) rowsSpinner.getValue(), (Integer) colsSpinner.getValue())) {
+            sizeSpinner.setValue(Integer.valueOf((Integer) rowsSpinner.getValue() * (Integer) colsSpinner.getValue()));
+            enableComponents();
+            //graphPanel1.repaint();
+        }
+    }
+
+    private void colsSpinnerStateChangedHelper(javax.swing.event.ChangeEvent evt) {
+        if (app.selectRowsCols((Integer) rowsSpinner.getValue(), (Integer) colsSpinner.getValue())) {
+            sizeSpinner.setValue(Integer.valueOf((Integer) rowsSpinner.getValue() * (Integer) colsSpinner.getValue()));
+            enableComponents();
+            //graphPanel1.repaint();
+        }
+    }
+
     private void helpDemoButtonActionPerformedHelper(java.awt.event.ActionEvent evt) {
         final String message =
                 "1. Press File>New to start a new demo.\n" +
@@ -435,6 +467,11 @@ public class ALVISDesktop extends javax.swing.JFrame {
         helpCreditsButton = new javax.swing.JMenuItem();
         jSeparator12 = new javax.swing.JSeparator();
         helpAboutButton = new javax.swing.JMenuItem();
+
+        rowsLabel = new javax.swing.JLabel();
+        rowsSpinner = new javax.swing.JSpinner(new SpinnerNumberModel(3, 1, 99, 1));
+        colsLabel = new javax.swing.JLabel();
+        colsSpinner = new javax.swing.JSpinner(new SpinnerNumberModel(4, 2, 100, 1));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -561,7 +598,7 @@ public class ALVISDesktop extends javax.swing.JFrame {
         refreshRateSlider.setPaintTicks(true);
         refreshRateSlider.setPaintTrack(false);
         refreshRateSlider.setValue(4000);
-        refreshRateSlider.setMaximumSize(new java.awt.Dimension(200, 25));
+        refreshRateSlider.setMaximumSize(new java.awt.Dimension(100, 25));
         refreshRateSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 refreshRateSliderStateChanged(evt);
@@ -576,6 +613,32 @@ public class ALVISDesktop extends javax.swing.JFrame {
         refreshRateValueLabel.setMinimumSize(new java.awt.Dimension(80, 20));
         refreshRateValueLabel.setPreferredSize(new java.awt.Dimension(80, 20));
         jToolBar1.add(refreshRateValueLabel);
+
+        rowsLabel.setText("Rows");
+        jToolBar1.add(rowsLabel);
+
+        rowsSpinner.setMaximumSize(new java.awt.Dimension(100, 20));
+        rowsSpinner.setMinimumSize(new java.awt.Dimension(50, 20));
+        rowsSpinner.setPreferredSize(new java.awt.Dimension(60, 20));
+        rowsSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                rowsSpinnerStateChanged(evt);
+            }
+        });
+        jToolBar1.add(rowsSpinner);
+
+        colsLabel.setText("Cols");
+        jToolBar1.add(colsLabel);
+
+        colsSpinner.setMaximumSize(new java.awt.Dimension(100, 20));
+        colsSpinner.setMinimumSize(new java.awt.Dimension(50, 20));
+        colsSpinner.setPreferredSize(new java.awt.Dimension(60, 20));
+        colsSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                colsSpinnerStateChanged(evt);
+            }
+        });
+        jToolBar1.add(colsSpinner);
 
         javax.swing.GroupLayout graphCanvas1Layout = new javax.swing.GroupLayout(graphCanvas1);
         graphCanvas1.setLayout(graphCanvas1Layout);
@@ -967,11 +1030,20 @@ public class ALVISDesktop extends javax.swing.JFrame {
         algoActionPerformedHelper(evt);
     }//GEN-LAST:event_algoBFSButtonActionPerformed
 
-    private void graphSAGridButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_graphGrid_1ButtonActionPerformed
+    private void graphSAGridButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_graphSAGridButtonActionPerformed
         // TODO add your handling code here:
         graphActionHelper(evt);
-    }//GEN-LAST:event_algoBFSButtonActionPerformed
+    }
 
+    private void rowsSpinnerStateChanged(ChangeEvent evt) {//GEN-FIRST:RowsComboBoxActionPerformed
+        // TODO add your handling code here:
+        rowsSpinnerStateChangedHelper(evt);
+    }
+
+    private void colsSpinnerStateChanged(ChangeEvent evt) {//GEN-FIRST:ColsComboBoxActionPerformed
+        // TODO add your handling code here:
+        colsSpinnerStateChangedHelper(evt);
+    }
 
     /**
     * @param args the command line arguments
@@ -1046,5 +1118,8 @@ public class ALVISDesktop extends javax.swing.JFrame {
     private javax.swing.JButton stopButton2;
     // End of variables declaration//GEN-END:variables
 
-
+    private javax.swing.JLabel rowsLabel;
+    private javax.swing.JSpinner rowsSpinner;
+    private javax.swing.JLabel colsLabel;
+    private javax.swing.JSpinner colsSpinner;
 }

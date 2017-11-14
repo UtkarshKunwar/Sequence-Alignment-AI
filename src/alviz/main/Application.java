@@ -51,6 +51,9 @@ public class Application {
     public int branchingFactor;
     public int density;
     public int densityMax;
+
+    public int rows;
+    public int cols;
     
     public boolean sizeUpdatable;
     public boolean computeGridDimension;
@@ -62,6 +65,23 @@ public class Application {
             computeGridDimension = true;
         }
     }
+
+    public void setRowsCols(int rows, int cols) {
+        this.rows = rows;
+        this.cols = cols;
+        setNodeCount(this.rows * this.cols);
+        if (!sizeUpdatable) {
+            computeGridDimension = true;
+        }
+    }
+//
+//    public void setCols(int cols) {
+//        this.cols = cols;
+//        setNodeCount(this.rows * this.cols);
+//        if (!sizeUpdatable) {
+//            computeGridDimension = false;
+//        }
+//    }
 
     public ExecState execState;
 
@@ -489,7 +509,7 @@ public class Application {
             else if (command.equals("SA Grid")) {
                 resetApp();
                 graph = GraphFactory.createGraph(graphClass);
-                graph = GraphFactory.createSAGrid(graph, width, height, nodeCountGiven, GraphShape.SA_GRID);
+                graph = GraphFactory.createSAGrid(graph, cols, rows, width, height, GraphShape.SA_GRID);
                 nodeCount = graph.getNodeCount();
                 setSizeUpdatableTrue();
                 graphSelector = new GraphSelector(graph);
@@ -712,5 +732,25 @@ public class Application {
         }
         return rc;
     }
+
+    public boolean selectRowsCols(int rows, int cols) {
+        boolean rc = false;
+        if (isNextState(ExecState.SIZE_SELECTED)) {
+            setRowsCols(rows, cols);
+            execState = ExecState.SIZE_SELECTED;
+            rc = true;
+        }
+        return rc;
+    }
+
+//    public boolean selectCols(int cols) {
+//        boolean rc = false;
+//        if (isNextState(ExecState.SIZE_SELECTED)) {
+//            setCols(cols);
+//            execState = ExecState.SIZE_SELECTED;
+//            rc = true;
+//        }
+//        return rc;
+//    }
 
 }
