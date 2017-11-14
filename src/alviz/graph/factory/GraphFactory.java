@@ -83,6 +83,10 @@ public class GraphFactory {
         return Grid.create(g, width, height, nodeCountGiven, shape);
     }
 
+    static public BaseGraph createSAGrid(BaseGraph g, int width, int height, int nodeCountGiven, GraphShape shape) {
+        return SAGrid.create(g, width, height, nodeCountGiven, shape);
+    }
+
     static public BaseGraph createGridMST(BaseGraph g, int width, int height, int nodeCountGiven, GraphShape shape, boolean debug) {
         return new GridMST(g, width, height, nodeCountGiven, shape, debug).create();
     }

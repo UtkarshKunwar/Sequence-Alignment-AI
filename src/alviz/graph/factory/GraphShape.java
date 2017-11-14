@@ -27,4 +27,6 @@ public enum GraphShape {
     GRID_2_MST,
     GRID_3_MST,
     GRID_4_MST,
+
+    SA_GRID,
 }

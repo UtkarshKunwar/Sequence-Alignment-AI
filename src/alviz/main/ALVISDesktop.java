@@ -142,6 +142,7 @@ public class ALVISDesktop extends javax.swing.JFrame {
                         graphGrid_2MSTButton.setEnabled(true);
                         graphGrid_3MSTButton.setEnabled(true);
                         graphGrid_4MSTButton.setEnabled(true);
+                        graphSAGridButton.setEnabled(true);
                     //}
                 }
             }
@@ -428,6 +429,7 @@ public class ALVISDesktop extends javax.swing.JFrame {
         graphGrid_2MSTButton = new javax.swing.JMenuItem();
         graphGrid_3MSTButton = new javax.swing.JMenuItem();
         graphGrid_4MSTButton = new javax.swing.JMenuItem();
+        graphSAGridButton = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         helpDemoButton = new javax.swing.JMenuItem();
         helpCreditsButton = new javax.swing.JMenuItem();
@@ -749,6 +751,15 @@ public class ALVISDesktop extends javax.swing.JFrame {
             }
         });
         graphMenu.add(graphGrid_4MSTButton);
+        graphMenu.add(jSeparator14);
+
+        graphSAGridButton.setText("SA Grid");
+        graphSAGridButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                graphSAGridButtonActionPerformed(evt);
+            }
+        });
+        graphMenu.add(graphSAGridButton);
 
         jMenuBar1.add(graphMenu);
 
@@ -956,6 +967,11 @@ public class ALVISDesktop extends javax.swing.JFrame {
         algoActionPerformedHelper(evt);
     }//GEN-LAST:event_algoBFSButtonActionPerformed
 
+    private void graphSAGridButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_graphGrid_1ButtonActionPerformed
+        // TODO add your handling code here:
+        graphActionHelper(evt);
+    }//GEN-LAST:event_algoBFSButtonActionPerformed
+
 
     /**
     * @param args the command line arguments
@@ -997,6 +1013,7 @@ public class ALVISDesktop extends javax.swing.JFrame {
     private javax.swing.JMenuItem graphGrid_3MSTButton;
     private javax.swing.JMenuItem graphGrid_4Button;
     private javax.swing.JMenuItem graphGrid_4MSTButton;
+    private javax.swing.JMenuItem graphSAGridButton;
     private javax.swing.JMenu graphMenu;
     private javax.swing.JMenuItem graphSparseButton;
     private javax.swing.JMenuItem graphTreeButton;

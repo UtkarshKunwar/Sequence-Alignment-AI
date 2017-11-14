@@ -486,6 +486,16 @@ public class Application {
                 execState = ExecState.SEARCH_SPACE_LOADED;
                 rc = true;
             }
+            else if (command.equals("SA Grid")) {
+                resetApp();
+                graph = GraphFactory.createGraph(graphClass);
+                graph = GraphFactory.createSAGrid(graph, width, height, nodeCountGiven, GraphShape.SA_GRID);
+                nodeCount = graph.getNodeCount();
+                setSizeUpdatableTrue();
+                graphSelector = new GraphSelector(graph);
+                execState = ExecState.SEARCH_SPACE_LOADED;
+                rc = true;
+            }
             else {
                 //System.out.printf("loadGraph(%s), graph not found...\n", command);
             }
