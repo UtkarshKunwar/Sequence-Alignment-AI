@@ -1,0 +1,26 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage[margin=1in]{geometry}
+
+\title{\Large{\textbf{Artificial Intelligence (CS562)}}\\\vspace{0.5em}Sequence Alignment\\
+}
+\author{\normalsize{Utkarsh Kunwar (B15338), Utkrisht Dhankar (B15138)}}
+\date{\normalsize{\today}}
+
+\begin{document}
+\maketitle
+
+\normalsize
+
+\begin{itemize}
+	\item To solve the problem of Sequence Alignment, we used the approach of \textit{Best First Search} algorithm on a special weighted grid.
+	\item In SA, we have a randomly generated original sequence of length \textit{M}, and a modified sequence of length \textit{N} where \textit{M\textgreater N.}
+	\item A grid (weighted graph) is constructed with diagonals going from top left to bottom right and corresponding edge weights depending upon the matching sequence. \\ \textit{Eg - A--\textgreater A = 0, A--\textgreater T = 2, A--\textgreater G = 4, etc.}
+	\item The mutation in the modified sequence depends on the parameter \textit{alpha} which determines how much the sequence has to be mutated.
+	\item A tool bar is present for selection of the values of M (columns), N (rows), alpha, and the original and modified sequence displays.
+	\item The source node is the topmost leftmost node and the goal node is the bottommost rightmost node for the full sequence. Source and goal nodes can be changed depending upon the subsequences we want to test against.
+	\item The path traced by the algorithm from source to goal shows how similar the sequence is by finding the path with least cost.
+	\item Turns in the path away from the diagonal indicate multiple matches and blanks in the modified sequence compared to the original sequence.
+	
+\end{itemize}
+
+\end{document}
