@@ -11,6 +11,8 @@
 
 package alviz.main;
 
+import alviz.graph.factory.SequenceGenerator;
+
 import java.awt.event.ActionEvent;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -46,6 +48,7 @@ public class ALVISDesktop extends javax.swing.JFrame {
         app.cols = (Integer)colsSpinner.getValue();
 
         app.alpha = (Integer) alphaSpinner.getValue() / 100.0f;
+
         enableComponents();
     }
     
@@ -363,11 +366,32 @@ public class ALVISDesktop extends javax.swing.JFrame {
     private void rowsSpinnerStateChangedHelper(javax.swing.event.ChangeEvent evt) {
         if (app.selectRowsCols((Integer) rowsSpinner.getValue(), (Integer) colsSpinner.getValue())) {
             sizeSpinner.setValue(Integer.valueOf((Integer) rowsSpinner.getValue() * (Integer) colsSpinner.getValue()));
+
             if ((Integer) rowsSpinner.getValue() >= (Integer) colsSpinner.getValue()) {
-                colsSpinner.setModel(new javax.swing.SpinnerNumberModel((Integer) rowsSpinner.getValue() + 1, (Integer) rowsSpinner.getValue() + 1, 100, 1));
+                colsSpinner.setModel(new javax.swing.SpinnerNumberModel(
+                        (Integer) rowsSpinner.getValue() + 1,
+                        (Integer) rowsSpinner.getValue() + 1,
+                        100,
+                        1)
+                );
             } else {
-                colsSpinner.setModel(new javax.swing.SpinnerNumberModel((Integer) colsSpinner.getValue() + 0, (Integer) rowsSpinner.getValue() + 1, 100, 1));
+                colsSpinner.setModel(new javax.swing.SpinnerNumberModel(
+                        (Integer) colsSpinner.getValue() + 0,
+                        (Integer) rowsSpinner.getValue() + 1,
+                        100,
+                        1)
+                );
             }
+
+            seqgen = new SequenceGenerator(
+                    (Integer) alphaSpinner.getValue() / 100.0f,
+                    (Integer) colsSpinner.getValue(),
+                    (Integer) rowsSpinner.getValue());
+            seqgen.generateNewPair();
+
+            orgSeqLabel.setText("     Original Sequence = " + seqgen.getGenerated().getSeq());
+            modSeqLabel.setText("     Modified Sequence = " + seqgen.getModified().getSeq());
+
             enableComponents();
             //graphPanel1.repaint();
         }
@@ -376,9 +400,25 @@ public class ALVISDesktop extends javax.swing.JFrame {
     private void colsSpinnerStateChangedHelper(javax.swing.event.ChangeEvent evt) {
         if (app.selectRowsCols((Integer) rowsSpinner.getValue(), (Integer) colsSpinner.getValue())) {
             sizeSpinner.setValue(Integer.valueOf((Integer) rowsSpinner.getValue() * (Integer) colsSpinner.getValue()));
+
             if ((Integer) rowsSpinner.getValue() >= (Integer) colsSpinner.getValue()) {
-                rowsSpinner.setModel(new javax.swing.SpinnerNumberModel((Integer) colsSpinner.getValue() - 1, 3, (Integer) colsSpinner.getValue() - 1, 1));
+                rowsSpinner.setModel(new javax.swing.SpinnerNumberModel(
+                        (Integer) colsSpinner.getValue() - 1,
+                        3,
+                        (Integer) colsSpinner.getValue() - 1,
+                        1)
+                );
             }
+
+            seqgen = new SequenceGenerator(
+                    (Integer) alphaSpinner.getValue() / 100.0f,
+                    (Integer) colsSpinner.getValue(),
+                    (Integer) rowsSpinner.getValue());
+            seqgen.generateNewPair();
+
+            orgSeqLabel.setText("     Original Sequence = " + seqgen.getGenerated().getSeq());
+            modSeqLabel.setText("     Modified Sequence = " + seqgen.getModified().getSeq());
+
             enableComponents();
             //graphPanel1.repaint();
         }
@@ -386,6 +426,15 @@ public class ALVISDesktop extends javax.swing.JFrame {
 
     private void alphaSpinnerStateChangedHelper(javax.swing.event.ChangeEvent evt){
         if(app.selectAlpha((Integer) alphaSpinner.getValue())) {
+            seqgen = new SequenceGenerator(
+                    (Integer) alphaSpinner.getValue() / 100.0f,
+                    (Integer) colsSpinner.getValue(),
+                    (Integer) rowsSpinner.getValue());
+            seqgen.generateNewPair();
+
+            orgSeqLabel.setText("     Original Sequence = " + seqgen.getGenerated().getSeq());
+            modSeqLabel.setText("     Modified Sequence = " + seqgen.getModified().getSeq());
+
             enableComponents();
         }
     }
@@ -512,6 +561,9 @@ public class ALVISDesktop extends javax.swing.JFrame {
 
         alphaLabel = new javax.swing.JLabel();
         alphaSpinner = new javax.swing.JSpinner(new SpinnerNumberModel(50, 0, 100, 1));
+
+        seqgen = new SequenceGenerator(0.5f, 10, 9);
+        seqgen.generateNewPair();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -693,8 +745,8 @@ public class ALVISDesktop extends javax.swing.JFrame {
         });
         jToolBar2.add(alphaSpinner);
 
-        String orgSeq = "     Original Sequence = ";
-        String modSeq = "     Modified Sequence = ";
+        String orgSeq = "     Original Sequence = " + seqgen.getGenerated().getSeq();
+        String modSeq = "     Modified Sequence = " + seqgen.getModified().getSeq();
         orgSeqLabel.setText(orgSeq);
         modSeqLabel.setText(modSeq);
         jToolBar2.add(orgSeqLabel);
@@ -1196,4 +1248,6 @@ public class ALVISDesktop extends javax.swing.JFrame {
 
     private javax.swing.JLabel alphaLabel;
     private javax.swing.JSpinner alphaSpinner;
+
+    private SequenceGenerator seqgen;
 }
