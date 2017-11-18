@@ -12,10 +12,7 @@
 package alviz.main;
 
 import java.awt.event.ActionEvent;
-import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
-import javax.swing.JSlider;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 
 /**
@@ -34,7 +31,7 @@ public class ALVISDesktop extends javax.swing.JFrame {
         app = Application.getInstance((Integer)sizeSpinner.getValue());
 
         jToolBar1.setFloatable(false);
-        
+        jToolBar2.setFloatable(false);
         addKeyListener(graphCanvas1); // graph panel listens to key strokes in ALVISDesktop
         graphCanvas1.addKeyListener(graphCanvas1); // graph panel listens to its own key strokes
         graphCanvas1.addMouseListener(graphCanvas1); // graph panel listens to its own mouse moves
@@ -82,6 +79,9 @@ public class ALVISDesktop extends javax.swing.JFrame {
                 rowsSpinner.setEnabled(false);
                 colsLabel.setEnabled(false);
                 colsSpinner.setEnabled(false);
+
+                orgSeqLabel.setEnabled(false);
+                modSeqLabel.setEnabled(false);
             }
             break;
             case ALGO_SELECTED: {
@@ -156,6 +156,9 @@ public class ALVISDesktop extends javax.swing.JFrame {
                         rowsSpinner.setEnabled(true);
                         colsLabel.setEnabled(true);
                         colsSpinner.setEnabled(true);
+
+                        orgSeqLabel.setEnabled(true);
+                        modSeqLabel.setEnabled(true);
                     //}
                 }
             }
@@ -183,8 +186,13 @@ public class ALVISDesktop extends javax.swing.JFrame {
 
                     startNodeButton.setEnabled(true);
 
+                    rowsLabel.setEnabled(false);
                     rowsSpinner.setEnabled(false);
+                    colsLabel.setEnabled(false);
                     colsSpinner.setEnabled(false);
+
+                    orgSeqLabel.setEnabled(true);
+                    modSeqLabel.setEnabled(true);
                 //}
             }
             break;
@@ -341,9 +349,15 @@ public class ALVISDesktop extends javax.swing.JFrame {
         }
     }
 
+    // TODO - Add generated sequences in the JLabels.
     private void rowsSpinnerStateChangedHelper(javax.swing.event.ChangeEvent evt) {
         if (app.selectRowsCols((Integer) rowsSpinner.getValue(), (Integer) colsSpinner.getValue())) {
             sizeSpinner.setValue(Integer.valueOf((Integer) rowsSpinner.getValue() * (Integer) colsSpinner.getValue()));
+            if ((Integer) rowsSpinner.getValue() >= (Integer) colsSpinner.getValue()) {
+                colsSpinner.setModel(new javax.swing.SpinnerNumberModel((Integer) rowsSpinner.getValue() + 1, (Integer) rowsSpinner.getValue() + 1, 100, 1));
+            } else {
+                colsSpinner.setModel(new javax.swing.SpinnerNumberModel((Integer) colsSpinner.getValue() + 0, (Integer) rowsSpinner.getValue() + 1, 100, 1));
+            }
             enableComponents();
             //graphPanel1.repaint();
         }
@@ -352,6 +366,9 @@ public class ALVISDesktop extends javax.swing.JFrame {
     private void colsSpinnerStateChangedHelper(javax.swing.event.ChangeEvent evt) {
         if (app.selectRowsCols((Integer) rowsSpinner.getValue(), (Integer) colsSpinner.getValue())) {
             sizeSpinner.setValue(Integer.valueOf((Integer) rowsSpinner.getValue() * (Integer) colsSpinner.getValue()));
+            if ((Integer) rowsSpinner.getValue() >= (Integer) colsSpinner.getValue()) {
+                rowsSpinner.setModel(new javax.swing.SpinnerNumberModel((Integer) colsSpinner.getValue() - 1, 3, (Integer) colsSpinner.getValue() - 1, 1));
+            }
             enableComponents();
             //graphPanel1.repaint();
         }
@@ -414,6 +431,7 @@ public class ALVISDesktop extends javax.swing.JFrame {
     private void initComponents() {
 
         jToolBar1 = new javax.swing.JToolBar();
+        jToolBar2 = new javax.swing.JToolBar();
         sizeLabel = new javax.swing.JLabel();
         sizeSpinner = new javax.swing.JSpinner(new SpinnerNumberModel(1000, 2, 3000, 50));
         branchingFactorLabel = new javax.swing.JLabel();
@@ -469,13 +487,17 @@ public class ALVISDesktop extends javax.swing.JFrame {
         helpAboutButton = new javax.swing.JMenuItem();
 
         rowsLabel = new javax.swing.JLabel();
-        rowsSpinner = new javax.swing.JSpinner(new SpinnerNumberModel(3, 1, 99, 1));
+        rowsSpinner = new javax.swing.JSpinner(new SpinnerNumberModel(9, 3, 99, 1));
         colsLabel = new javax.swing.JLabel();
-        colsSpinner = new javax.swing.JSpinner(new SpinnerNumberModel(4, 2, 100, 1));
+        colsSpinner = new javax.swing.JSpinner(new SpinnerNumberModel(10, 4, 100, 1));
+
+        orgSeqLabel = new javax.swing.JLabel();
+        modSeqLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jToolBar1.setRollover(true);
+        jToolBar2.setRollover(true);
 
         sizeLabel.setText("Size");
         jToolBar1.add(sizeLabel);
@@ -598,7 +620,7 @@ public class ALVISDesktop extends javax.swing.JFrame {
         refreshRateSlider.setPaintTicks(true);
         refreshRateSlider.setPaintTrack(false);
         refreshRateSlider.setValue(4000);
-        refreshRateSlider.setMaximumSize(new java.awt.Dimension(100, 25));
+        refreshRateSlider.setMaximumSize(new java.awt.Dimension(200, 25));
         refreshRateSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 refreshRateSliderStateChanged(evt);
@@ -614,8 +636,8 @@ public class ALVISDesktop extends javax.swing.JFrame {
         refreshRateValueLabel.setPreferredSize(new java.awt.Dimension(80, 20));
         jToolBar1.add(refreshRateValueLabel);
 
-        rowsLabel.setText("Rows");
-        jToolBar1.add(rowsLabel);
+        rowsLabel.setText("Rows (N)");
+        jToolBar2.add(rowsLabel);
 
         rowsSpinner.setMaximumSize(new java.awt.Dimension(100, 20));
         rowsSpinner.setMinimumSize(new java.awt.Dimension(50, 20));
@@ -625,10 +647,10 @@ public class ALVISDesktop extends javax.swing.JFrame {
                 rowsSpinnerStateChanged(evt);
             }
         });
-        jToolBar1.add(rowsSpinner);
+        jToolBar2.add(rowsSpinner);
 
-        colsLabel.setText("Cols");
-        jToolBar1.add(colsLabel);
+        colsLabel.setText("      Cols (M)");
+        jToolBar2.add(colsLabel);
 
         colsSpinner.setMaximumSize(new java.awt.Dimension(100, 20));
         colsSpinner.setMinimumSize(new java.awt.Dimension(50, 20));
@@ -638,7 +660,14 @@ public class ALVISDesktop extends javax.swing.JFrame {
                 colsSpinnerStateChanged(evt);
             }
         });
-        jToolBar1.add(colsSpinner);
+        jToolBar2.add(colsSpinner);
+
+        String orgSeq = "     Original Sequence = ";
+        String modSeq = "     Modified Sequence = ";
+        orgSeqLabel.setText(orgSeq);
+        modSeqLabel.setText(modSeq);
+        jToolBar2.add(orgSeqLabel);
+        jToolBar2.add(modSeqLabel);
 
         javax.swing.GroupLayout graphCanvas1Layout = new javax.swing.GroupLayout(graphCanvas1);
         graphCanvas1.setLayout(graphCanvas1Layout);
@@ -862,12 +891,14 @@ public class ALVISDesktop extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 833, Short.MAX_VALUE)
+                    .addComponent(jToolBar2, GroupLayout.PREFERRED_SIZE, 833, Short.MAX_VALUE)
             .addComponent(graphCanvas1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jToolBar2, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(graphCanvas1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -1103,6 +1134,7 @@ public class ALVISDesktop extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator9;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JToolBar jToolBar2;
     private javax.swing.JMenuItem newButton;
     private javax.swing.JButton pipeButton;
     private javax.swing.JMenuItem readGraphButton;
@@ -1122,4 +1154,7 @@ public class ALVISDesktop extends javax.swing.JFrame {
     private javax.swing.JSpinner rowsSpinner;
     private javax.swing.JLabel colsLabel;
     private javax.swing.JSpinner colsSpinner;
+
+    private javax.swing.JLabel orgSeqLabel;
+    private javax.swing.JLabel modSeqLabel;
 }

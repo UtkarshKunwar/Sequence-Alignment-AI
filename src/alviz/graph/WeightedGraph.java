@@ -13,6 +13,7 @@ public class WeightedGraph extends Graph {
     static public WeightedGraph creategraph() {
         return new WeightedGraph();
     }
+
     public Graph createGraph(int nodeCount) {
         return new Graph(nodeCount);
     }
@@ -30,7 +31,6 @@ public class WeightedGraph extends Graph {
     }
 
     public class Node extends Graph.Node {
-
         public Node (int x, int y) {
             super(x,y);
         }
