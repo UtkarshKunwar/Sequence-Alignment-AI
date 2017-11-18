@@ -25,13 +25,13 @@ public class AlgorithmFactory {
 
         switch (algoType) {
             case BFS:
-                al = new BFS((Graph)graph) {
+                al = new BFS(graph) {
                     @Override
                     public void paint() { graphCanvas.repaint(); }
                 };
                 break;
             case DFS:
-                al = new DFS((Graph)graph) {
+                al = new DFS(graph) {
                     @Override
                     public void paint() { graphCanvas.repaint(); }
                 };

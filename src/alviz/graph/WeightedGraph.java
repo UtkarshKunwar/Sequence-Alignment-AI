@@ -2,7 +2,8 @@ package alviz.graph;
 
 import alviz.base.graph.BaseGraph;
 
-public class WeightedGraph extends Graph {
+public class WeightedGraph extends BaseGraph<WeightedGraph.Node, WeightedGraph.Edge> {
+
     public WeightedGraph() {
         super();
     }
@@ -10,18 +11,23 @@ public class WeightedGraph extends Graph {
         super(nodeCount);
     }
 
-    static public WeightedGraph creategraph() {
+    static public WeightedGraph createGraph() {
         return new WeightedGraph();
     }
 
-    public Graph createGraph(int nodeCount) {
-        return new Graph(nodeCount);
+    public WeightedGraph createGraph(int nodeCount) {
+        return new WeightedGraph(nodeCount);
     }
 
-    public Graph.Node createNode(int x, int y) {
-        Graph.Node n = new Graph.Node(x, y);
+    public Node createNode(int x, int y) {
+        Node n = new Node(x, y);
         super.createNode(n);
         return n;
+    }
+
+    @Override
+    public Edge createEdge(Node n1, Node n2) {
+        return null;
     }
 
     public Edge createEdge(Node n1, Node n2, float weight) {
@@ -30,27 +36,22 @@ public class WeightedGraph extends Graph {
         return e;
     }
 
-    public class Node extends Graph.Node {
+    public class Node extends BaseGraph<WeightedGraph.Node, WeightedGraph.Edge>.Node {
+
         public Node (int x, int y) {
             super(x,y);
         }
     }
 
-    public class Edge extends Graph.Edge {
+    public class Edge extends BaseGraph<WeightedGraph.Node, WeightedGraph.Edge>.Edge {
 
-        float weight;
+        public Edge(Node n1, Node n2) {
+            super(n1, n2);
+        }
 
         public Edge(Node n1, Node n2, float weight) {
-            super(n1, n2);
-            this.weight = weight;
-        }
-
-        public float getWeight() {
-            return weight;
-        }
-
-        public void setWeight(float weight) {
-            this.weight = weight;
+            super(n1, n2, weight);
         }
     }
+
 }

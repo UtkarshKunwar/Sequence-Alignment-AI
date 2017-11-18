@@ -11,6 +11,7 @@ import alviz.base.algorithm.AlgorithmType;
 import alviz.base.graph.BaseGraph;
 import alviz.base.graph.GraphClass;
 import alviz.base.graph.GraphPainter;
+import alviz.graph.WeightedGraph;
 import alviz.graph.factory.GraphFactory;
 import alviz.base.graph.GraphSelector;
 import alviz.graph.factory.GraphShape;
@@ -514,8 +515,11 @@ public class Application {
             }
             else if (command.equals("SA Grid")) {
                 resetApp();
-                graph = GraphFactory.createGraph(graphClass);
+                graph = GraphFactory.createGraph(GraphClass.WEIGHTED_GRAPH);
                 graph = GraphFactory.createSAGrid(graph, cols, rows, width, height, GraphShape.SA_GRID);
+
+                WeightedGraph wg = (WeightedGraph) graph;
+
                 nodeCount = graph.getNodeCount();
                 setSizeUpdatableTrue();
                 graphSelector = new GraphSelector(graph);

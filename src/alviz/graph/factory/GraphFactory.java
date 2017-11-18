@@ -25,6 +25,7 @@ public class GraphFactory {
     static public BaseGraph createGraph(GraphClass gc) {
         switch (gc) {
             case GRAPH: return Graph.createGraph();
+            case WEIGHTED_GRAPH: return WeightedGraph.createGraph();
             default: return null;
         }
     }

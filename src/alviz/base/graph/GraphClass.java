@@ -10,7 +10,8 @@ package alviz.base.graph;
  * @author baskaran
  */
 public enum GraphClass {
-    GRAPH("graph")
+    GRAPH("graph"),
+    WEIGHTED_GRAPH("weighted_graph")
     ;
 
     private String gcname;

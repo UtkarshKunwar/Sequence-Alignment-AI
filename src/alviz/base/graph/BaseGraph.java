@@ -583,6 +583,22 @@ public abstract class BaseGraph <tNode extends BaseGraph.Node, tEdge extends Bas
             this.cost = euclideanDistance(node_1.x, node_1.y, node_2.x, node_2.y) * (1.0 + Math.random());
             computeLineParameters();
         }
+
+        public Edge(tNode node_1, tNode node_2, float cost) {
+            assert node_1 != null;
+            assert node_2 != null;
+            assert node_1 != node_2; // no self loops...
+
+            id = getNextEdgeId();
+            this.state = RuntimeState.DEFAULT;
+            this.node_1 = node_1;
+            this.node_2 = node_2;
+
+            //this.cost = euclideanDistance(node_1, node_2) * (1.0 + Math.random());
+
+            this.cost = cost;
+            computeLineParameters();
+        }
         
         public void copyData(BaseGraph.Edge edge) {
             this.state = edge.state;
