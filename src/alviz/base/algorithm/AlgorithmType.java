@@ -15,6 +15,7 @@ public enum AlgorithmType {
 
     BFS("BFS", GraphClass.GRAPH),
     DFS("DFS", GraphClass.GRAPH),
+    BEST_FS("BestFS", GraphClass.WEIGHTED_GRAPH)
             ;
     
     private String MenuItemName;

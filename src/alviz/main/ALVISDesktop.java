@@ -62,6 +62,7 @@ public class ALVISDesktop extends javax.swing.JFrame {
                 algoMenu.setEnabled(true);
                     algoBFSButton.setEnabled(true);        // enabled after integration
                     algoDFSButton.setEnabled(true);       // enabled after integration
+                    algoBestFSButton.setEnabled(true);
                 sizeLabel.setEnabled(false);
                 sizeSpinner.setEnabled(false);
                 branchingFactorLabel.setEnabled(false);
@@ -257,6 +258,9 @@ public class ALVISDesktop extends javax.swing.JFrame {
 
     private void newButtonActionHelper(java.awt.event.ActionEvent evt) {
         app.resetApp();
+        seqgen.generateNewPair();
+        orgSeqLabel.setText("     Original Sequence = " + seqgen.getGenerated().getSeq());
+        modSeqLabel.setText("     Modified Sequence = " + seqgen.getModified().getSeq());
         enableComponents();
         graphCanvas1.repaint();
     }
@@ -572,6 +576,8 @@ public class ALVISDesktop extends javax.swing.JFrame {
         seqgen = new SequenceGenerator(0.5f, 10, 9);
         seqgen.generateNewPair();
 
+        algoBestFSButton = new javax.swing.JMenuItem();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jToolBar1.setRollover(true);
@@ -697,7 +703,7 @@ public class ALVISDesktop extends javax.swing.JFrame {
         refreshRateSlider.setMinorTickSpacing(500);
         refreshRateSlider.setPaintTicks(true);
         refreshRateSlider.setPaintTrack(false);
-        refreshRateSlider.setValue(4000);
+        refreshRateSlider.setValue(3000);
         refreshRateSlider.setMaximumSize(new java.awt.Dimension(200, 25));
         refreshRateSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -810,6 +816,14 @@ public class ALVISDesktop extends javax.swing.JFrame {
             }
         });
         algoMenu.add(algoDFSButton);
+
+        algoBestFSButton.setText("BestFS");
+        algoBestFSButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                algoBestFSButtonActionPerformed(evt);
+            }
+        });
+        algoMenu.add(algoBestFSButton);
 
         jMenuBar1.add(algoMenu);
 
@@ -1171,6 +1185,15 @@ public class ALVISDesktop extends javax.swing.JFrame {
         alphaSpinnerStateChangedHelper(evt);
     }
 
+    public static SequenceGenerator getSeqGen() {
+        return seqgen;
+    }
+
+    private void algoBestFSButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_algoDFSButtonActionPerformed
+        // TODO add your handling code here:
+        algoActionPerformedHelper(evt);
+    }//GEN-LAST:event_algoDFSButtonActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -1256,5 +1279,7 @@ public class ALVISDesktop extends javax.swing.JFrame {
     private javax.swing.JLabel alphaLabel;
     private javax.swing.JSpinner alphaSpinner;
 
-    private SequenceGenerator seqgen;
+    private static SequenceGenerator seqgen;
+
+    private javax.swing.JMenuItem algoBestFSButton;
 }

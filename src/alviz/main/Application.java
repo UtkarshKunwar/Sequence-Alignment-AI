@@ -308,7 +308,6 @@ public class Application {
     }
 
     public boolean selectAlgo(String algoname) {
-//        System.out.println("selectAlgo> " + algoname);
         boolean rc = false;
         if (algoname != null) {
             if (isNextState(ExecState.ALGO_SELECTED)  && setAlgoType(algoname)) {

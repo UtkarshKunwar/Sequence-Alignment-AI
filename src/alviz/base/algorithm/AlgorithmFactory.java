@@ -36,6 +36,12 @@ public class AlgorithmFactory {
                     public void paint() { graphCanvas.repaint(); }
                 };
                 break;
+            case BEST_FS:
+                al = new BestFS(graph) {
+                    @Override
+                    public void paint() { graphCanvas.repaint(); }
+                };
+                break;
             default:
                 //System.out.println("createAlgorithm> null");
         }
