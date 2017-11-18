@@ -45,6 +45,7 @@ public class ALVISDesktop extends javax.swing.JFrame {
         app.rows = (Integer)rowsSpinner.getValue();
         app.cols = (Integer)colsSpinner.getValue();
 
+        app.alpha = (Integer) alphaSpinner.getValue() / 100.0f;
         enableComponents();
     }
     
@@ -82,6 +83,9 @@ public class ALVISDesktop extends javax.swing.JFrame {
 
                 orgSeqLabel.setEnabled(false);
                 modSeqLabel.setEnabled(false);
+
+                alphaLabel.setEnabled(false);
+                alphaSpinner.setEnabled(false);
             }
             break;
             case ALGO_SELECTED: {
@@ -159,6 +163,9 @@ public class ALVISDesktop extends javax.swing.JFrame {
 
                         orgSeqLabel.setEnabled(true);
                         modSeqLabel.setEnabled(true);
+
+                        alphaLabel.setEnabled(true);
+                        alphaSpinner.setEnabled(true);
                     //}
                 }
             }
@@ -193,6 +200,9 @@ public class ALVISDesktop extends javax.swing.JFrame {
 
                     orgSeqLabel.setEnabled(true);
                     modSeqLabel.setEnabled(true);
+
+                    alphaLabel.setEnabled(false);
+                    alphaSpinner.setEnabled(false);
                 //}
             }
             break;
@@ -374,6 +384,12 @@ public class ALVISDesktop extends javax.swing.JFrame {
         }
     }
 
+    private void alphaSpinnerStateChangedHelper(javax.swing.event.ChangeEvent evt){
+        if(app.selectAlpha((Integer) alphaSpinner.getValue())) {
+            enableComponents();
+        }
+    }
+
     private void helpDemoButtonActionPerformedHelper(java.awt.event.ActionEvent evt) {
         final String message =
                 "1. Press File>New to start a new demo.\n" +
@@ -493,6 +509,9 @@ public class ALVISDesktop extends javax.swing.JFrame {
 
         orgSeqLabel = new javax.swing.JLabel();
         modSeqLabel = new javax.swing.JLabel();
+
+        alphaLabel = new javax.swing.JLabel();
+        alphaSpinner = new javax.swing.JSpinner(new SpinnerNumberModel(50, 0, 100, 1));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -661,6 +680,18 @@ public class ALVISDesktop extends javax.swing.JFrame {
             }
         });
         jToolBar2.add(colsSpinner);
+
+        alphaLabel.setText("     Alpha (in %)");
+        jToolBar2.add(alphaLabel);
+        alphaSpinner.setMaximumSize(new java.awt.Dimension(100, 20));
+        alphaSpinner.setMinimumSize(new java.awt.Dimension(50, 20));
+        alphaSpinner.setPreferredSize(new java.awt.Dimension(60, 20));
+        alphaSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                alphaSpinnerStateChanged(evt);
+            }
+        });
+        jToolBar2.add(alphaSpinner);
 
         String orgSeq = "     Original Sequence = ";
         String modSeq = "     Modified Sequence = ";
@@ -1076,6 +1107,11 @@ public class ALVISDesktop extends javax.swing.JFrame {
         colsSpinnerStateChangedHelper(evt);
     }
 
+    private void alphaSpinnerStateChanged(ChangeEvent evt) {//GEN-FIRST:ColsComboBoxActionPerformed
+        // TODO add your handling code here:
+        alphaSpinnerStateChangedHelper(evt);
+    }
+
     /**
     * @param args the command line arguments
     */
@@ -1157,4 +1193,7 @@ public class ALVISDesktop extends javax.swing.JFrame {
 
     private javax.swing.JLabel orgSeqLabel;
     private javax.swing.JLabel modSeqLabel;
+
+    private javax.swing.JLabel alphaLabel;
+    private javax.swing.JSpinner alphaSpinner;
 }

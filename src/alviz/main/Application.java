@@ -54,6 +54,8 @@ public class Application {
 
     public int rows;
     public int cols;
+
+    public float alpha;
     
     public boolean sizeUpdatable;
     public boolean computeGridDimension;
@@ -73,6 +75,10 @@ public class Application {
         if (!sizeUpdatable) {
             computeGridDimension = true;
         }
+    }
+
+    public void setAlpha(float alpha) {
+        this.alpha = alpha;
     }
 //
 //    public void setCols(int cols) {
@@ -743,6 +749,15 @@ public class Application {
         return rc;
     }
 
+    public boolean selectAlpha(float alpha) {
+        boolean rc = false;
+        if (isNextState(ExecState.SIZE_SELECTED)) {
+            setAlpha(alpha);
+            execState = ExecState.SIZE_SELECTED;
+            rc = true;
+        }
+        return rc;
+    }
 //    public boolean selectCols(int cols) {
 //        boolean rc = false;
 //        if (isNextState(ExecState.SIZE_SELECTED)) {
