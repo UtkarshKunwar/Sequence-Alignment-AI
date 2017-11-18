@@ -375,12 +375,12 @@ public class ALVISDesktop extends javax.swing.JFrame {
                         1)
                 );
             } else {
-                colsSpinner.setModel(new javax.swing.SpinnerNumberModel(
-                        (Integer) colsSpinner.getValue() + 0,
-                        (Integer) rowsSpinner.getValue() + 1,
-                        100,
-                        1)
-                );
+                rowsSpinner.setModel(new javax.swing.SpinnerNumberModel(
+                        (Integer) rowsSpinner.getValue() + 0,
+                        3,
+                        (Integer) colsSpinner.getValue() - 1,
+                        1
+                ));
             }
 
             seqgen = new SequenceGenerator(
@@ -406,6 +406,13 @@ public class ALVISDesktop extends javax.swing.JFrame {
                         (Integer) colsSpinner.getValue() - 1,
                         3,
                         (Integer) colsSpinner.getValue() - 1,
+                        1)
+                );
+            } else {
+                colsSpinner.setModel(new javax.swing.SpinnerNumberModel(
+                        (Integer) colsSpinner.getValue() - 0,
+                        (Integer) rowsSpinner.getValue() + 1,
+                        100,
                         1)
                 );
             }
